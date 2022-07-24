@@ -1,11 +1,32 @@
 import React from "react";
 import Link from "next/link";
-
+import { useMutation } from "@tanstack/react-query";
+import { login } from "services/auth";
 // layout for page
 
 import Auth from "layouts/Auth.js";
 
-export default function Login() {
+export default function Login(props) {
+  const [credentials, setCreds] = React.useState({
+    username: "",
+    password: "",
+  });
+  const mutation = useMutation(login, {
+    onSuccess: () => {
+      alert("success");
+    },
+  });
+  const handleLogin = () => {
+    mutation.mutate(credentials);
+  };
+  const handleChange = (evt) => {
+    const value = evt.target.value;
+    setCreds({
+      ...credentials,
+      [evt.target.name]: value,
+    });
+  };
+  console.log(mutation?.data);
   return (
     <>
       <div className="container mx-auto px-4 h-full">
@@ -49,6 +70,8 @@ export default function Login() {
                       Email
                     </label>
                     <input
+                      name="username"
+                      onChange={handleChange}
                       type="email"
                       className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                       placeholder="Email"
@@ -63,6 +86,8 @@ export default function Login() {
                       Password
                     </label>
                     <input
+                      name="password"
+                      onChange={handleChange}
                       type="password"
                       className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                       placeholder="Password"
@@ -85,9 +110,15 @@ export default function Login() {
                     <button
                       className="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                       type="button"
+                      onClick={handleLogin}
                     >
                       Sign In
                     </button>
+                    {mutation?.data?.message === "Unauthorized" ? (
+                      <p style={{ color: "red" }}>Wrong Email/Password</p>
+                    ) : (
+                      ""
+                    )}
                   </div>
                 </form>
               </div>

@@ -3,9 +3,15 @@ import ReactDOM from "react-dom";
 import App from "next/app";
 import Head from "next/head";
 import Router from "next/router";
-
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
 import PageChange from "components/PageChange/PageChange.js";
-
+const queryClient = new QueryClient();
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "styles/tailwind.css";
 
@@ -73,9 +79,11 @@ export default class MyApp extends App {
           <title>Job-X</title>
           <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
         </Head>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
+        <QueryClientProvider client={queryClient}>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </QueryClientProvider>
       </React.Fragment>
     );
   }
