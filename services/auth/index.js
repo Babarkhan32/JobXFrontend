@@ -1,6 +1,6 @@
 export const register = async (data) => {
   try {
-    console.log("Data", data);
+
     const result = await fetch("http://localhost:3000/users", {
       method: "POST",
       body: JSON.stringify(data),
@@ -13,7 +13,7 @@ export const register = async (data) => {
 
 export const login = async (data) => {
   try {
-    console.log("Data", data);
+  
     const result = await fetch("http://localhost:3000/users/login", {
       method: "POST",
       body: JSON.stringify(data),
